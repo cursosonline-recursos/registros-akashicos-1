@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>La Brújula Akáshica | Bitácora de Claridad y Propósito</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #07090e;
+      --card-bg: rgba(18, 22, 34, 0.75);
+      --card-border: rgba(212, 175, 55, 0.22);
+      --gold: #d4af37;
+      --gold-light: #f3e5ab;
+      --gold-glow: rgba(212, 175, 55, 0.35);
+      --text: #e2e8f0;
+      --text-muted: #94a3b8;
+      --accent: #38bdf8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      background-image: 
+        radial-gradient(circle at 50% 10%, rgba(212, 175, 55, 0.12) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(56, 189, 248, 0.08) 0%, transparent 40%);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2.5rem 1.25rem;
+    }
+
+    header {
+      text-align: center;
+      max-width: 680px;
+      margin-bottom: 2.5rem;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      padding: 0.35rem 1rem;
+      border-radius: 9999px;
+      background: rgba(212, 175, 55, 0.1);
+      border: 1px solid var(--gold);
+      color: var(--gold-light);
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      letter-spacing: 0.04em;
+      color: #fff;
+      margin-bottom: 0.75rem;
+      text-shadow: 0 0 20px rgba(212, 175, 55, 0.25);
+    }
+
+    p.subtitle {
+      color: var(--text-muted);
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 760px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+      padding: clamp(1.5rem, 4vw, 2.75rem);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Stepper Header */
+    .steps-indicator {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      margin-bottom: 2.5rem;
+    }
+
+    .steps-indicator::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 10%;
+      right: 10%;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.1);
+      z-index: 1;
+      transform: translateY(-50%);
+    }
+
+    .step-node {
+      position: relative;
+      z-index: 2;
+      background: #0f1422;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      transition: all 0.3s ease;
+    }
+
+    .step-node.active {
+      border-color: var(--gold);
+      color: var(--gold-light);
+      box-shadow: 0 0 14px var(--gold-glow);
+      background: #181d2e;
+    }
+
+    .step-node.completed {
+      background: var(--gold);
+      color: #07090e;
+      border-color: var(--gold);
+    }
+
+    /* View Sections */
+    .view-step {
+      display: none;
+      animation: fadeIn 0.45s ease forwards;
+    }
+
+    .view-step.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2.step-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.4rem;
+      color: var(--gold-light);
+      margin-bottom: 0.5rem;
+    }
+
+    p.step-desc {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 1.75rem;
+      line-height: 1.5;
+    }
+
+    /* Step 1: Area Selection */
+    .grid-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .option-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 1.25rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .option-card:hover {
+      border-color: rgba(212, 175, 55, 0.5);
+      background: rgba(212, 175, 55, 0.05);
+      transform: translateY(-2px);
+    }
+
+    .option-card.selected {
+      border-color: var(--gold);
+      background: rgba(212, 175, 55, 0.12);
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.15);
+    }
+
+    .option-icon {
+      font-size: 1.8rem;
+    }
+
+    .option-name {
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .option-caption {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* Step 2: Coherence Breather */
+    .breathing-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+
+    .circle-pacer {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      border: 2px solid var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      position: relative;
+      background: radial-gradient(circle, rgba(212,175,55,0.2) 0%, transparent 70%);
+      transition: transform 4s ease-in-out;
+      box-shadow: 0 0 25px var(--gold-glow);
+    }
+
+    .circle-pacer.inhale {
+      transform: scale(1.35);
+    }
+
+    .circle-pacer.exhale {
+      transform: scale(0.9);
+    }
+
+    .pacer-label {
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      color: var(--gold-light);
+      letter-spacing: 0.06em;
+    }
+
+    /* Step 3: Inquiry & Archetype */
+    .inquiry-card {
+      background: rgba(0, 0, 0, 0.35);
+      border-left: 4px solid var(--gold);
+      padding: 1.25rem 1.5rem;
+      border-radius: 0 12px 12px 0;
+      margin-bottom: 1.5rem;
+    }
+
+    .inquiry-card h4 {
+      font-family: 'Cinzel', serif;
+      color: var(--gold-light);
+      font-size: 0.9rem;
+      margin-bottom: 0.4rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .inquiry-card p {
+      font-size: 1.05rem;
+      color: #fff;
+      font-style: italic;
+      line-height: 1.5;
+    }
+
+    .archetype-box {
+      border: 1px dashed rgba(212, 175, 55, 0.4);
+      border-radius: 14px;
+      padding: 1.25rem;
+      background: rgba(212, 175, 55, 0.04);
+      margin-bottom: 1.5rem;
+      display: flex;
+      gap: 1.25rem;
+      align-items: center;
+    }
+
+    .archetype-avatar {
+      font-size: 2.2rem;
+      background: rgba(0, 0, 0, 0.4);
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      border: 1px solid var(--gold);
+      flex-shrink: 0;
+    }
+
+    .archetype-info h4 {
+      font-family: 'Cinzel', serif;
+      color: #fff;
+      font-size: 1rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .archetype-info p {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      line-height: 1.4;
+    }
+
+    /* Step 4: Integration Journal */
+    .journal-prompt {
+      margin-bottom: 1.25rem;
+    }
+
+    .journal-prompt label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--gold-light);
+      margin-bottom: 0.5rem;
+    }
+
+    textarea {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      color: #fff;
+      padding: 1rem;
+      font-family: inherit;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      resize: vertical;
+      min-height: 90px;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    textarea:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.15);
+    }
+
+    /* Controls */
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 2rem;
+      gap: 1rem;
+    }
+
+    button.btn {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      padding: 0.85rem 1.6rem;
+      border-radius: 10px;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    button.btn-secondary {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-muted);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    button.btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+    }
+
+    button.btn-primary {
+      background: linear-gradient(135deg, #d4af37, #b89324);
+      color: #07090e;
+      box-shadow: 0 4px 14px rgba(212, 175, 55, 0.3);
+    }
+
+    button.btn-primary:hover {
+      filter: brightness(1.1);
+      transform: translateY(-1px);
+    }
+
+    button.btn-primary:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Output Summary Banner */
+    .summary-card {
+      background: rgba(212, 175, 55, 0.08);
+      border: 1px solid var(--gold);
+      border-radius: 14px;
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .summary-card h4 {
+      font-family: 'Cinzel', serif;
+      color: var(--gold-light);
+      margin-bottom: 0.75rem;
+    }
+
+    .summary-text {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: var(--text);
+      white-space: pre-wrap;
+    }
+
+    @media (max-width: 600px) {
+      .controls {
+        flex-direction: column-reverse;
+      }
+      button.btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="badge">Bonus Exclusivo | Registros Akáshicos</div>
+    <h1>La Brújula Akáshica</h1>
+    <p class="subtitle">Herramienta de autoindagación profunda para traducir bloqueos actuales en lecciones evolutivas y acuerdos de acción consciente.</p>
+  </header>
+
+  <main class="app-container">
+
+    <!-- Progress Indicator -->
+    <div class="steps-indicator">
+      <div class="step-node active" id="node-1">1</div>
+      <div class="step-node" id="node-2">2</div>
+      <div class="step-node" id="node-3">3</div>
+      <div class="step-node" id="node-4">4</div>
+    </div>
+
+    <!-- Step 1: Selección de Área de Enfoque -->
+    <section class="view-step active" id="step-1">
+      <h2 class="step-title">Paso 1: Identifica tu Encrucijada</h2>
+      <p class="step-desc">Elige la dimensión de tu vida donde sientas mayor bloqueo, duda o repetición de patrones en este momento.</p>
+      
+      <div class="grid-options">
+        <div class="option-card" onclick="selectArea('relaciones', this)">
+          <div class="option-icon">🕊️</div>
+          <div class="option-name">Vínculos y Relaciones</div>
+          <div class="option-caption">Cierres de ciclo, patrones de apego o distancias emocionales.</div>
+        </div>
+        <div class="option-card" onclick="selectArea('proposito', this)">
+          <div class="option-icon">🧭</div>
+          <div class="option-name">Vocación y Dirección</div>
+          <div class="option-caption">Falta de rumbo, estancamiento creativo o toma de decisiones laborales.</div>
+        </div>
+        <div class="option-card" onclick="selectArea('abundancia', this)">
+          <div class="option-icon">⚖️</div>
+          <div class="option-name">Flujo y Recursos</div>
+          <div class="option-caption">Techo de ingresos, miedo a la carencia o autosabotaje financiero.</div>
+        </div>
+        <div class="option-card" onclick="selectArea('autovalor', this)">
+          <div class="option-icon">✨</div>
+          <div class="option-name">Autovalor y Certeza</div>
+          <div class="option-caption">Síndrome del impostor, miedo al juicio o dificultad para poner límites.</div>
+        </div>
+      </div>
+
+      <div class="controls" style="justify-content: flex-end;">
+        <button class="btn btn-primary" id="btn-to-step2" disabled onclick="goToStep(2)">
+          Continuar hacia la Calibración &rarr;
+        </button>
+      </div>
+    </section>
+
+    <!-- Step 2: Calibración y Coherencia Cardíaca -->
+    <section class="view-step" id="step-2">
+      <h2 class="step-title">Paso 2: Coherencia y Presencia</h2>
+      <p class="step-desc">No se puede acceder a la sabiduría profunda con la mente agitada. Sigue el ritmo del pulso para sincronizar tu atención.</p>
+
+      <div class="breathing-box">
+        <div class="circle-pacer" id="pacer-circle">
+          <span class="pacer-label" id="pacer-text">Inhala</span>
+        </div>
+        <p style="color: var(--text-muted); font-size: 0.9rem;" id="pacer-sub">Respira por la nariz sintiendo el aire llegar al corazón...</p>
+      </div>
+
+      <div class="controls">
+        <button class="btn btn-secondary" onclick="goToStep(1)">&larr; Volver</button>
+        <button class="btn btn-primary" onclick="goToStep(3)">Acceder a la Indagación &rarr;</button>
+      </div>
+    </section>
+
+    <!-- Step 3: Preguntas de Poder y Arquetipo -->
+    <section class="view-step" id="step-3">
+      <h2 class="step-title">Paso 3: Revelación del Núcleo</h2>
+      <p class="step-desc">Reflexiona sobre la pregunta clave decodificada para tu situación y el arquetipo de fortaleza disponible para ti.</p>
+
+      <div class="inquiry-card">
+        <h4>Pregunta Espejo de tu Registro</h4>
+        <p id="inquiry-question">Cargando pregunta de introspección...</p>
+      </div>
+
+      <div class="archetype-box">
+        <div class="archetype-avatar" id="archetype-icon">🛡️</div>
+        <div class="archetype-info">
+          <h4 id="archetype-name">El Guardián del Límite</h4>
+          <p id="archetype-desc">Te recuerda que decir "no" a lo que te desgasta es la forma más elevada de decir "sí" a tu propósito.</p>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button class="btn btn-secondary" onclick="goToStep(2)">&larr; Volver</button>
+        <button class="btn btn-primary" onclick="goToStep(4)">Abrir Bitácora de Integración &rarr;</button>
+      </div>
+    </section>
+
+    <!-- Step 4: Bitácora de Integración y Descarga -->
+    <section class="view-step" id="step-4">
+      <h2 class="step-title">Paso 4: Tu Acuerdo Terrenal</h2>
+      <p class="step-desc">La sabiduría akáshica solo se consolida cuando se aterriza en una acción concreta en el mundo físico.</p>
+
+      <div class="journal-prompt">
+        <label for="insight-input">1. La Revelación Principal (¿Qué verdad ya no puedes seguir ignorando?):</label>
+        <textarea id="insight-input" placeholder="Ej: Me doy cuenta de que he estado esperando permiso ajeno para empezar mi proyecto..."></textarea>
+      </div>
+
+      <div class="journal-prompt">
+        <label for="action-input">2. Mi Acción Terrenal en las próximas 48 horas:</label>
+        <textarea id="action-input" placeholder="Ej: Voy a enviar ese correo, poner el límite con calma o reservar 1 hora sin pantallas para planificar..."></textarea>
+      </div>
+
+      <div class="controls">
+        <button class="btn btn-secondary" onclick="goToStep(3)">&larr; Volver</button>
+        <button class="btn btn-primary" onclick="generateSummary()">Sellar y Generar Resumen ✨</button>
+      </div>
+
+      <div id="summary-section" style="display: none;">
+        <div class="summary-card">
+          <h4>Hoja de Ruta Akáshica Sellada</h4>
+          <div class="summary-text" id="summary-content"></div>
+        </div>
+        <div style="margin-top: 1rem; text-align: center;">
+          <button class="btn btn-secondary" onclick="copySummary()">📋 Copiar mi Plan al Portapapeles</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    let state = {
+      area: null,
+      currentStep: 1,
+      timer: null
+    };
+
+    const database = {
+      relaciones: {
+        question: "¿Qué estás esperando que la otra persona te dé, que en realidad necesitas empezar a darte tú mismo/a?",
+        archetype: "El Espejo Compasivo",
+        icon: "🪞",
+        desc: "Tu desafío no es cambiar al otro, sino reconocer qué herida propia está buscando validación en una fuente externa."
+      },
+      proposito: {
+        question: "Si supieras con certeza total que no vas a fracasar, ¿cuál es el paso sincero que darías hoy mismo?",
+        archetype: "El Alquimista del Inicio",
+        icon: "🔥",
+        desc: "El propósito no se encuentra como un objeto terminado; se forja al atreverte a dar el primer paso con honestidad."
+      },
+      abundancia: {
+        question: "¿A quién en tu historia familiar le serías 'desleal' inconscientemente si te permites vivir con riqueza, tranquilidad y desahogo?",
+        archetype: "El Custodio de la Soberanía",
+        icon: "🗝️",
+        desc: "Romper techos de escasez requiere honrar el esfuerzo de tus raíces, pero sin replicar su sufrimiento."
+      },
+      autovalor: {
+        question: "¿Qué costo silencioso estás pagando en salud, paz o tiempo por complacer expectativas que nunca fueron tuyas?",
+        archetype: "El Guardián del Límite",
+        icon: "🛡️",
+        desc: "La serenidad interior inicia el día en que tu necesidad de paz supera tu necesidad de aprobación externa."
+      }
+    };
+
+    function selectArea(areaKey, cardElem) {
+      state.area = areaKey;
+      document.querySelectorAll('.option-card').forEach(el => el.classList.remove('selected'));
+      cardElem.classList.add('selected');
+      document.getElementById('btn-to-step2').disabled = false;
+
+      // Cargar data en el paso 3
+      const item = database[areaKey];
+      document.getElementById('inquiry-question').textContent = item.question;
+      document.getElementById('archetype-name').textContent = item.archetype;
+      document.getElementById('archetype-icon').textContent = item.icon;
+      document.getElementById('archetype-desc').textContent = item.desc;
+    }
+
+    function goToStep(stepNumber) {
+      state.currentStep = stepNumber;
+      
+      // Manejar vistas
+      document.querySelectorAll('.view-step').forEach(el => el.classList.remove('active'));
+      document.getElementById(`step-${stepNumber}`).classList.add('active');
+
+      // Manejar indicadores
+      for (let i = 1; i <= 4; i++) {
+        const node = document.getElementById(`node-${i}`);
+        node.classList.remove('active', 'completed');
+        if (i === stepNumber) {
+          node.classList.add('active');
+        } else if (i < stepNumber) {
+          node.classList.add('completed');
+        }
+      }
+
+      // Si entra a paso 2, iniciar pacer respiratorio
+      if (stepNumber === 2) {
+        startBreathing();
+      } else {
+        stopBreathing();
+      }
+    }
+
+    function startBreathing() {
+      const circle = document.getElementById('pacer-circle');
+      const text = document.getElementById('pacer-text');
+      const sub = document.getElementById('pacer-sub');
+
+      let isInhale = true;
+
+      function cycle() {
+        if (isInhale) {
+          circle.classList.add('inhale');
+          circle.classList.remove('exhale');
+          text.textContent = "Inhala";
+          sub.textContent = "Llena tu pecho y centro de presencia...";
+        } else {
+          circle.classList.add('exhale');
+          circle.classList.remove('inhale');
+          text.textContent = "Exhala";
+          sub.textContent = "Suelta la tensión, el control y la duda...";
+        }
+        isInhale = !isInhale;
+      }
+
+      cycle();
+      state.timer = setInterval(cycle, 4000);
+    }
+
+    function stopBreathing() {
+      if (state.timer) {
+        clearInterval(state.timer);
+        state.timer = null;
+      }
+    }
+
+    function generateSummary() {
+      const insight = document.getElementById('insight-input').value.trim() || "(No completado)";
+      const action = document.getElementById('action-input').value.trim() || "(No completado)";
+      const item = database[state.area || 'proposito'];
+
+      const content = `📜 REGISTRO DE CLARIDAD Y COMPROMISO EVOLUTIVO
+Dimensión: ${state.area ? state.area.toUpperCase() : 'GENERAL'}
+Arquetipo Activo: ${item.archetype}
+
+✦ LA VERDAD REVELADA:
+${insight}
+
+✦ MI ACCIÓN TERRENAL (PRÓXIMAS 48 HORAS):
+${action}
+
+"La sabiduría que no se aterriza en una decisión física solo es entretenimiento mental. Hoy elijo hacerme cargo de mi camino."`;
+
+      document.getElementById('summary-content').textContent = content;
+      document.getElementById('summary-section').style.display = 'block';
+      document.getElementById('summary-section').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function copySummary() {
+      const text = document.getElementById('summary-content').textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        alert("¡Tu plan de integración ha sido copiado al portapapeles!");
+      });
+    }
+  </script>
+</body>
+</html>
